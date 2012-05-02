@@ -3,8 +3,6 @@ using TShockAPI;
 using Terraria;
 using System;
 using System.ComponentModel;
-using System.Text.RegularExpressions;
-using System.Globalization;
 using System.Text;
 
 // RenamePlayer ****************************************************************
@@ -14,12 +12,16 @@ namespace RenamePlayer
   [APIVersion(1, 11)]
   public class RenamePlayer : TerrariaPlugin
   {
+    private TSPlayer player;
+    private string   newName;
+    private bool     nameChanged = false;
 
     #region Plugin Overrides
     // Initialize ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     public override void Initialize()
     {
-      NetHooks.GreetPlayer += OnGreetPlayer;    
+      ServerHooks.Join     += OnJoin;
+      NetHooks.GreetPlayer += OnGreetPlayer;
     } // Initialize ------------------------------------------------------------
 
     
@@ -29,6 +31,7 @@ namespace RenamePlayer
       if ( disposing )
       {
          NetHooks.GreetPlayer -= OnGreetPlayer;
+         ServerHooks.Connect  -= OnJoin;
          base.Dispose( disposing );
       } // if
     } // Dispose ---------------------------------------------------------------
@@ -36,16 +39,14 @@ namespace RenamePlayer
 
 
     #region Plugin Hooks 
-    // OnGreetPlayer +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    void OnGreetPlayer( int              playerId, 
-                        HandledEventArgs eventArgs )
+    // OnJoin ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    void OnJoin( int              playerId, 
+                 HandledEventArgs eventArgs )
     {
-      TSPlayer player  = TShock.Players[playerId];
-      char[]   split   = player.Name.ToCharArray();
-      string   newName = player.Name;
-      
+      player = TShock.Players[playerId];
       byte[] byteArray   = Encoding.Unicode.GetBytes( player.Name );
       byte[] asciiArray  = Encoding.Convert( Encoding.Unicode, Encoding.ASCII, byteArray );
+
       newName = Encoding.ASCII.GetString( asciiArray );
 
       if ( player.Name != newName )
@@ -58,8 +59,20 @@ namespace RenamePlayer
         Log.Info( string.Format( "Player '{0}' has been renamed to '{1}'.", player.Name, newName ) );
 
         player.TPlayer.name = newName;
+        nameChanged = true;
+      } // if
+
+    } // OnJoin ----------------------------------------------------------------
+
+    
+    // OnGreetPlayer +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    void OnGreetPlayer( int              playerId, 
+                        HandledEventArgs eventArgs )
+    {
+      if ( nameChanged )
+      {
         player.SendMessage( "Warning: Your name had invalid characters, it has been changed to: " + newName, 
-                             Color.IndianRed );
+                             Color.OrangeRed );
       } // if
 
     } // OnGreetPlayer ---------------------------------------------------------
@@ -91,7 +104,7 @@ namespace RenamePlayer
     // Version +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
    public override Version Version
     {
-      get { return new Version( 1, 0, 1, 0 ); }
+      get { return new Version( 1, 0, 2, 0 ); }
     } // Versin ----------------------------------------------------------------
 
     

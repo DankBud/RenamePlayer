@@ -23,6 +23,9 @@ Renames Player if the name has any invalid (non-ASCII) characters.
 
 ### Version History:
 
+1.0.2.0:
+* Replaced Greet with Join
+
 1.0.1.0: 
 * Added logging on rename
 * Added random number to replace ?
