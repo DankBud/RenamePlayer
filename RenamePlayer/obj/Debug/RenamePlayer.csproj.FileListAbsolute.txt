@@ -1,0 +1,5 @@
+C:\terraria\TShock.DEV\ServerPlugins\RenamePlayer.dll
+C:\terraria\TShock.DEV\ServerPlugins\RenamePlayer.pdb
+C:\csProjects\RenamePlayer\RenamePlayer\obj\Debug\ResolveAssemblyReference.cache
+C:\csProjects\RenamePlayer\RenamePlayer\obj\Debug\RenamePlayer.dll
+C:\csProjects\RenamePlayer\RenamePlayer\obj\Debug\RenamePlayer.pdb
