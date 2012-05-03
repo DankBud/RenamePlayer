@@ -44,17 +44,18 @@ namespace RenamePlayer
                  HandledEventArgs eventArgs )
     {
       player = TShock.Players[playerId];
-      byte[] byteArray   = Encoding.Unicode.GetBytes( player.Name );
-      byte[] asciiArray  = Encoding.Convert( Encoding.Unicode, Encoding.ASCII, byteArray );
+      byte[] byteArray  = Encoding.Unicode.GetBytes( player.Name );
+      byte[] asciiArray = Encoding.Convert( Encoding.Unicode, Encoding.ASCII, byteArray );
 
       newName = Encoding.ASCII.GetString( asciiArray );
 
       if ( player.Name != newName )
       {
-        // randomize numbers in case they are all ?
-        newName = newName.Replace( "?", Main.rand.Next( 10 ).ToString() );
+        
+        //newName = newName.Replace( "?", Main.rand.Next( 10 ).ToString() ); // randomize numbers in case they are all ?
+        newName = "guest_" + player.Name.ToString().GetHashCode().ToString( "x" ).Substring( 0, 4 );
 
-        TShock.Utils.Broadcast( string.Format( "Player '{0}' has been renamed to '{1}.", player.Name, newName ), 
+        TShock.Utils.Broadcast( string.Format( "Player '{0}' has been renamed to '{1}'.", player.Name, newName ), 
                                 Color.IndianRed );
         Log.Info( string.Format( "Player '{0}' has been renamed to '{1}'.", player.Name, newName ) );
 
@@ -104,7 +105,7 @@ namespace RenamePlayer
     // Version +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
    public override Version Version
     {
-      get { return new Version( 1, 0, 2, 0 ); }
+      get { return new Version( 1, 0, 3, 0 ); }
     } // Versin ----------------------------------------------------------------
 
     

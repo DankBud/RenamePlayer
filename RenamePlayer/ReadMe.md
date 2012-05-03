@@ -23,6 +23,9 @@ Renames Player if the name has any invalid (non-ASCII) characters.
 
 ### Version History:
 
+1.0.3.0:
+* Changed random letters to "guest_{hash}"
+
 1.0.2.0:
 * Replaced Greet with Join
 
