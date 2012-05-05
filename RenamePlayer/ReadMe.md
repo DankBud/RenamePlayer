@@ -23,6 +23,9 @@ Renames Player if the name has any invalid (non-ASCII) characters.
 
 ### Version History:
 
+1.0.4.0:
+o Added lookup table for name renames
+
 1.0.3.0:
 * Changed random letters to "guest_{hash}"
 
